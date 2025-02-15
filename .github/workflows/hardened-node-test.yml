@@ -1,0 +1,15 @@
+name: hardened-node-test
+
+on: 
+  push:
+    paths:
+    - 'github/actions/**'
+    - 'github/workflows/hardened-node-*.yml'
+    - 'hardened-node/**'
+  pull_request:
+    paths:
+      - 'github/workflows/hardened-node-*.yml'
+      - 'hardened-node/**'
+  schedule:
+    - cron:  0 0  * * 0
+    
