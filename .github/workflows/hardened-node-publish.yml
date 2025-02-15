@@ -9,7 +9,7 @@ on:
 
 env:
   IMAGE_NAME: hardened-node  
-  IMAGE_PATH: {{vars.REGISTRY}}/${{ github.repository }}/hardened-node
+  IMAGE_PATH: ${{vars.REGISTRY}}/${{ github.repository }}/hardened-node
   DOCKER_CONTENT_TRUST: 1
   BASE_IMAGE: photon:latest
 
