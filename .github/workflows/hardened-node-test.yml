@@ -48,6 +48,10 @@ jobs:
           built-image: ${{ env.IMAGE_PATH}}:test
           base-image: ${{ env.BASE_IMAGE }}
 
+      - uses: ruslanbahna/reusable-actions/docker-bench-security@v0.0.5
+        with:
+          image-name: ${{ env.IMAGE_PATH}}:test
+
       - name: Run Trivy Vulnerability scanner test
         uses: aquasecurity/trivy-action@master
         env: 
