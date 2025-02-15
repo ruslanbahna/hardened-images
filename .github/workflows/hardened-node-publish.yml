@@ -11,7 +11,7 @@ on:
     - '.github/actions/**'
     - '.github/workflows/hardened-node-*.yml'
     - 'hardened-node/**'
-    
+
 env:
   IMAGE_NAME: hardened-node 
   IMAGE_PATH: ${{vars.REGISTRY}}/${{github.repository}}/hardened-node
@@ -34,7 +34,7 @@ jobs:
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
-          regisrty: ${{vars.registry}}
+          regisrty: ${{vars.registry}}/ruslanbahna/container-images
           username: ${{github.repository_owner}}
           password: ${{secrets.GHCR_TOKEN}}
 
