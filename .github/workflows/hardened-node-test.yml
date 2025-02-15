@@ -3,8 +3,8 @@ name: hardened-node-test
 on: 
   push:
     paths:
-    - 'github/actions/**'
-    - 'github/workflows/hardened-node-*.yml'
+    - '.github/actions/**'
+    - '.github/workflows/hardened-node-*.yml'
     - 'hardened-node/**'
   pull_request:
     paths:
