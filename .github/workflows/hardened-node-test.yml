@@ -38,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v5
         with: 
           context: ./container-images
-          file: .container-images/${{env.IMAGE_NAME}}/Dockerfile
+          file: ./container-images/${{env.IMAGE_NAME}}/Dockerfile
           load: true
           tags: ${{env.IMAGE_PATH}}:test
 
