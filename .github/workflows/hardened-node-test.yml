@@ -45,7 +45,7 @@ jobs:
         env: 
           DOCKER_CONTENT_TRUST: 0
         with:
-          built-image: ${{ env.IMAGE_PATH}}:${{ steps.GetVersion.outputs.major_minor}}.${{github.run_number}}
+          built-image: ${{ env.IMAGE_PATH}}:test
           base-image: ${{ env.BASE_IMAGE }}
 
       - name: Run Trivy Vulnerability scanner test
