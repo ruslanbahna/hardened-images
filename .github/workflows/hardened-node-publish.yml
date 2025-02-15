@@ -9,7 +9,7 @@ on:
 
 env:
   IMAGE_NAME: hardened-node  
-  IMAGE_PATH: ghcr.io/${{ github.repository }}/hardened-node
+  IMAGE_PATH: {{vars.REGISTRY}}/${{ github.repository }}/hardened-node
   DOCKER_CONTENT_TRUST: 1
   BASE_IMAGE: photon:latest
 
@@ -28,24 +28,47 @@ jobs:
       - name: Log in to Container Registry
         run: docker login ghcr.io --username ${{ github.repository_owner }} --password ${{ secrets.GHCR_TOKEN }}
 
-      - name: Get Node version number
+      - name: Get OS version
+        env:
+          DOCKER_CONTENT_TRUST: 0
+        id: GetVersion
+        run: |
+          major_minor=$(docker run  ${{ env.BASE_IMAGE }} lsb_release --short --release)
+          echo "major_minor=photon-$major_minor" >> $GITHUB_OUTPUT
+
+      - name: Build and export to Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: ./container-images
+          file: ./container-images/${{ env.IMAGE_NAME }}/Dockerfile
+          load: true
+          tags: |
+            ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}.${{github.run_number}}
+            ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}
+            ${{ env.IMAGE_PATH }}:latest
+      
+      - name: Get Node version
         env:
           DOCKER_CONTENT_TRUST: 0
         id: GetNodeVersion
         run: |
-          version=$(docker run --rm ${{ env.BASE_IMAGE }} node --version | tr -d ' ')
-          echo "node_version=node-$version" >> $GITHUB_ENV
-          echo "node_version=node-$version" >> $GITHUB_OUTPUT
-          echo "node_version_run=node-$version.${{ github.run_number }}" >> $GITHUB_ENV
-          echo "node_version_run=node-$version.${{ github.run_number }}" >> $GITHUB_OUTPUT
+          version=$(docker run  ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}.${{github.run_number}} node --version | tr -d ' ')
+          echo "version=node-$version" >> $GITHUB_OUTPUT
+          major_minor=${version%.*}
+          echo "major_minor=node-$major_minor" >>  $GITHUB_OUTPUT
 
-      - name: Build and Push image
+      - name: Build and push image
         uses: docker/build-push-action@v5
         with:
           context: ./container-images
           file: ./container-images/${{ env.IMAGE_NAME }}/Dockerfile
           push: true
           tags: |
+            ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}.${{github.run_number}}
+            ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}
             ${{ env.IMAGE_PATH }}:latest
-            ${{ env.IMAGE_PATH }}:${{ env.node_version }}
-            ${{ env.IMAGE_PATH }}:${{ env.node_version_run }}
+            ${{ env.IMAGE_PATH }}:${{ steps.GetNodeVersion.outputs.version}}
+            ${{ env.IMAGE_PATH }}:${{ steps.GetNodeVersion.outputs.major_minor}}
+
+
+
