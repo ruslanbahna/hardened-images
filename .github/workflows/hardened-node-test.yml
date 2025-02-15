@@ -50,7 +50,7 @@ jobs:
 
       - uses: ruslanbahna/reusable-actions/docker-bench-security@v0.0.7
         with:
-          image-name: ${{ env.IMAGE_PATH}}:test
+          image-name: ${{ env.IMAGE_PATH}}
 
       - name: Run Trivy Vulnerability scanner test
         uses: aquasecurity/trivy-action@master
