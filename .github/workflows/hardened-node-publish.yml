@@ -1,11 +1,10 @@
 name: hardened-node-publish
 
 on: 
-  push:
-    paths:
-    - '.github/actions/**'
-    - '.github/workflows/hardened-node-*.yml'
-    - 'hardened-node/**'
+  workflow_run:
+    workflows: ["hardened-node-test"]
+    types: [completed]
+    branches: [main]
 
 env:
   IMAGE_NAME: hardened-node  
@@ -16,6 +15,7 @@ env:
 jobs:
   publish-hardened-dockerfile:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
       - uses: actions/checkout@v4
