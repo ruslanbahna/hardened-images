@@ -41,7 +41,7 @@ jobs:
           load: true
           tags: ${{env.IMAGE_PATH}}:test
 
-      - name: ruslanbahna/reusable-actions/container-image-size@v0.0.2
+      - uses: ruslanbahna/reusable-actions/container-image-size@v0.0.2
         env: 
           DOCKER_CONTENT_TRUST: 0
         with:
