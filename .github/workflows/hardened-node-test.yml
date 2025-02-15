@@ -14,7 +14,7 @@ on:
     - cron:  0 0  * * 0
 
 env:
-  IMAGE_NAME: hardened-node
+  IMAGE_NAME: hardened-node 
   IMAGE_PATH: ${{vars.registry}}/${{github.repository}}/hardened-node
   DOCKER_CONTENT_TRUST: 1
   BASE_IMAGE: photon:latest
