@@ -11,7 +11,7 @@ on:
       - 'github/workflows/hardened-node-*.yml'
       - 'hardened-node/**'
   schedule:
-    - cron:  0 0  * * 0
+    - cron:  */5 * * * *
 
 env:
   IMAGE_NAME: hardened-node 
