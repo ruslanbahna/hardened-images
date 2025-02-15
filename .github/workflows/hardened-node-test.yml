@@ -48,7 +48,7 @@ jobs:
           built-image: ${{ env.IMAGE_PATH}}:test
           base-image: ${{ env.BASE_IMAGE }}
 
-      - uses: ruslanbahna/reusable-actions/docker-bench-security@v0.0.5
+      - uses: ruslanbahna/reusable-actions/docker-bench-security@v0.0.6
         with:
           image-name: ${{ env.IMAGE_PATH}}:test
 
