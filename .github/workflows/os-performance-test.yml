@@ -20,7 +20,7 @@ jobs:
           packages: sysbench
       - run: sysbench cpu --threads=1 run
 
-  sysbench-test-photon-from-source:
+  sysbench-test-photon-from-source: 
     runs-on: ubuntu-latest
     container: ghcr.io/ruslanbahna/hardened-images/hardened-photon:photon-5.0.16
     steps:
