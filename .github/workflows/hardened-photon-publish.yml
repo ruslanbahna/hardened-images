@@ -1,11 +1,10 @@
 name: hardened-photon-publish
 
 on: 
-  push:
-    paths:
-    - '.github/actions/**'
-    - '.github/workflows/hardened-photon-*.yml'
-    - 'hardened-photon/**'
+  workflow_run:
+    workflows: ["hardened-photon-test"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
