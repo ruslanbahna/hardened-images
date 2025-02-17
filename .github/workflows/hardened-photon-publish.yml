@@ -1,14 +1,14 @@
-name: hardened-node-publish
+name: hardened-photon-publish
 
 on: 
   workflow_run:
-    workflows: ["hardened-node-test"]
+    workflows: ["hardened-photon-test"]
     types: [completed]
     branches: [main]
 
 env:
-  IMAGE_NAME: hardened-node  
-  IMAGE_PATH: ${{vars.REGISTRY}}/${{ github.repository }}/hardened-node
+  IMAGE_NAME: hardened-photon 
+  IMAGE_PATH: ${{vars.REGISTRY}}/${{ github.repository }}/hardened-photon
   DOCKER_CONTENT_TRUST: 1
   BASE_IMAGE: photon:latest
 
@@ -50,17 +50,14 @@ jobs:
             ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}.${{github.run_number}}
             ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}
             ${{ env.IMAGE_PATH }}:latest
-      
-      - name: Get Node version
-        env:
-          DOCKER_CONTENT_TRUST: 0
-        id: GetNodeVersion
-        run: |
-          version=$(docker run  ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}.${{github.run_number}} node --version | tr -d ' ')
-          echo "version=node-$version" >> $GITHUB_OUTPUT
-          major_minor=${version%.*}
-          echo "major_minor=node-$major_minor" >>  $GITHUB_OUTPUT
 
+      - uses: ruslanbahna/reusable-actions/container-image-size@v0.0.4
+        env: 
+          DOCKER_CONTENT_TRUST: 0
+        with:
+          built-image: ${{ env.IMAGE_PATH}}:${{ steps.GetVersion.outputs.major_minor}}.${{github.run_number}}
+          base-image: ${{ env.BASE_IMAGE }}
+    
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
@@ -71,8 +68,3 @@ jobs:
             ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}.${{github.run_number}}
             ${{ env.IMAGE_PATH }}:${{ steps.GetVersion.outputs.major_minor}}
             ${{ env.IMAGE_PATH }}:latest
-            ${{ env.IMAGE_PATH }}:${{ steps.GetNodeVersion.outputs.version}}
-            ${{ env.IMAGE_PATH }}:${{ steps.GetNodeVersion.outputs.major_minor}}
-
-
-

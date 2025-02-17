@@ -1,21 +1,21 @@
-name: hardened-node-test
+name: hardened-photon-test
 
 on: 
   push:
     paths:
     - '.github/actions/**'
-    - '.github/workflows/hardened-node-*.yml'
-    - 'hardened-node/**'
+    - '.github/workflows/hardened-photon-*.yml'
+    - 'hardened-photon/**'
   pull_request:
     paths:
-      - 'github/workflows/hardened-node-*.yml'
-      - 'hardened-node/**'
+      - 'github/workflows/hardened-photon-*.yml'
+      - 'hardened-photon/**'
   schedule:
     - cron:  0 0 * * 0
 
 env:
-  IMAGE_NAME: hardened-node 
-  IMAGE_PATH: ${{vars.REGISTRY}}/${{github.repository}}/hardened-node
+  IMAGE_NAME: hardened-photon
+  IMAGE_PATH: ${{vars.REGISTRY}}/${{github.repository}}/hardened-photon
   DOCKER_CONTENT_TRUST: 1
   BASE_IMAGE: photon:latest
 
