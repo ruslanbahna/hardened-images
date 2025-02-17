@@ -22,7 +22,7 @@ jobs:
 
   sysbench-test-photon-from-source:
     runs-on: ubuntu-latest
-    container: ghcr.io/ruslanbahna/hardened-images/hardened-photon:latest
+    container: ghcr.io/ruslanbahna/hardened-images/hardened-photon:photon-5.0.16
     steps:
       # Photon OS is missing the sysbench package. Adding sysbench package repo requires too many workarounds on Photon.
       # The ideal plan is to download the sysbench source code from Github and compile it.
@@ -50,7 +50,7 @@ jobs:
 
   sysbench-test-alpine:
     runs-on: ubuntu-latest
-    container: galpine:latest
+    container: alpine:latest
     steps:
       # Alpine doesn't come with bash. Need to install it to prevent subsequent actions from failing.
       - name: install bash
