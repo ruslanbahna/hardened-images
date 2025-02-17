@@ -36,14 +36,14 @@ jobs:
         with:
           registry: ${{ vars.REGISTRY }}
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_TOKEN }}
       
-      - name: Debug GITHUB_TOKEN Scope
-        run: |
-          echo "Checking token permissions..."
-          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-               -H "Accept: application/vnd.github.v3+json" \
-               https://api.github.com/user
+      # - name: Debug GITHUB_TOKEN Scope
+      #   run: |
+      #     echo "Checking token permissions..."
+      #     curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+      #          -H "Accept: application/vnd.github.v3+json" \
+      #          https://api.github.com/user
 
 
       - name: Get OS version
