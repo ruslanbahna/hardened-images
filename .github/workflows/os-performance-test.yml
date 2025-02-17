@@ -27,9 +27,13 @@ jobs:
       # Photon OS is missing the sysbench package. Adding sysbench package repo requires too many workarounds on Photon.
       # The ideal plan is to download the sysbench source code from Github and compile it.
       # See https://github.com/akopytov/sysbench/#building-and-installing-from-source
-      # Install packages to support running build scripts not included with Photon OS
-      - uses: ruslanbahna/reusable-actions/install-packages@v1.0.1
+      - name: Install packages to support running build scripts not included with Photon OS
+        uses: ruslanbahna/reusable-actions/install-packages@v1.0.1
         with:
+          packages: coreutils build-essentials
+      - name: Install packages recomended to build sysbench
+        uses: ruslanbahna/reusable-actions/install-packages@v1.0.1
+        with: 
           packages: make automake libtool pkg-config libaio-devel
       - name: Download sysbench source
         uses: actions/checkout@v4
