@@ -30,7 +30,7 @@ jobs:
       - name: Install packages to support running build scripts not included with Photon OS
         uses: ruslanbahna/reusable-actions/install-packages@v1.0.5
         with:
-          packages: coreutils build-essentials
+          packages: coreutils build-essential
       - name: Install packages recomended to build sysbench
         uses: ruslanbahna/reusable-actions/install-packages@v1.0.5
         with: 
