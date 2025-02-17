@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
-      - uses: ruslanbahna/reusable-actions/install-packages@v1.0.5
+      - uses: ruslanbahna/reusable-actions/install-packages@v1.0.6
         with:
           packages: sysbench
       - run: sysbench cpu --threads=1 run
@@ -28,11 +28,11 @@ jobs:
       # The ideal plan is to download the sysbench source code from Github and compile it.
       # See https://github.com/akopytov/sysbench/#building-and-installing-from-source
       - name: Install packages to support running build scripts not included with Photon OS
-        uses: ruslanbahna/reusable-actions/install-packages@v1.0.5
+        uses: ruslanbahna/reusable-actions/install-packages@v1.0.6
         with:
           packages: coreutils build-essential
       - name: Install packages recomended to build sysbench
-        uses: ruslanbahna/reusable-actions/install-packages@v1.0.5
+        uses: ruslanbahna/reusable-actions/install-packages@v1.0.6
         with: 
           packages: make automake libtool pkg-config libaio-devel
       - name: Download sysbench source
@@ -51,6 +51,8 @@ jobs:
         if: always() && (steps.compileSysbench.outcome == 'failure')
         run: cat config.log
       - run: sysbench cpu --threads=1 run
+      - name: Clean Workspace
+        uses: ruslanbahna/reusable-actions/clean-workspace@v1.0.6
 
   sysbench-test-alpine:
     runs-on: ubuntu-latest
@@ -59,7 +61,7 @@ jobs:
       # Alpine doesn't come with bash. Need to install it to prevent subsequent actions from failing.
       - name: install bash
         run: apk update && apk add bash
-      - uses: ruslanbahna/reusable-actions/install-packages@v1.0.5
+      - uses: ruslanbahna/reusable-actions/install-packages@v1.0.6
         with:
           packages: sysbench
       - run: sysbench cpu --threads=1 run
