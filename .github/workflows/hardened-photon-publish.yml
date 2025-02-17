@@ -6,10 +6,6 @@ on:
     types: [completed]
     branches: [main]
 
-permissions:
-  contents: read
-  packages: write
-
 
 env:
   IMAGE_NAME: hardened-photon 
