@@ -60,4 +60,3 @@ jobs:
           image-ref: ${{env.IMAGE_PATH}}:test
           exit-code: 1
           severity: HIGH,CRITICAL
-
