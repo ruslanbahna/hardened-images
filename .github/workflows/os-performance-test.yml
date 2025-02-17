@@ -1,0 +1,61 @@
+name: os-performance-test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/os-performance-test.yml'
+      - 'hardened-alpine/**'
+      - 'hardened-cbl-mariner/**'
+      - 'hardened-photon/**'
+      - 'hardened-ubuntu/**'
+  workflow_dispatch:
+
+jobs:
+  sysbench-test-ubuntu:
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    steps:
+      - uses: ruslanbahna/reusable-actions/install-packages@v0.0.9
+        with:
+          packages: sysbench
+      - run: sysbench cpu --threads=1 run
+
+  sysbench-test-photon-from-source:
+    runs-on: ubuntu-latest
+    container: ghcr.io/ruslanbahna/hardened-images/hardened-photon:latest
+    steps:
+      # Photon OS is missing the sysbench package. Adding sysbench package repo requires too many workarounds on Photon.
+      # The ideal plan is to download the sysbench source code from Github and compile it.
+      # See https://github.com/akopytov/sysbench/#building-and-installing-from-source
+      # Install packages to support running build scripts not included with Photon OS
+      - uses: ruslanbahna/reusable-actions/install-packages@v0.0.9
+        with:
+          packages: make automake libtool pkg-config libaio-devel
+      - name: Download sysbench source
+        uses: actions/checkout@v4
+        with:
+          repository: akopytov/sysbench
+      - name: Compile sysbench
+        id: compileSysbench
+        run: |
+          ./autogen.sh
+          # We won't run database benchmarks
+          ./configure --without-mysql
+          make -j
+          make install
+      - name: Determine compile failure
+        if: always() && (steps.compileSysbench.outcome == 'failure')
+        run: cat config.log
+      - run: sysbench cpu --threads=1 run
+
+  sysbench-test-alpine:
+    runs-on: ubuntu-latest
+    container: galpine:latest
+    steps:
+      # Alpine doesn't come with bash. Need to install it to prevent subsequent actions from failing.
+      - name: install bash
+        run: apk update && apk add bash
+      - uses: ruslanbahna/reusable-actions/install-packages@v0.0.9
+        with:
+          packages: sysbench
+      - run: sysbench cpu --threads=1 run
