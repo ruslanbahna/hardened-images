@@ -35,7 +35,7 @@ jobs:
         with:
           registry: ${{ vars.REGISTRY }}
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and export to DOCKER
         uses: docker/build-push-action@v5
