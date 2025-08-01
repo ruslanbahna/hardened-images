@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
-      - uses: ruslanbahna/reusable-actions/install-packages@v1.0.6
+      - uses: ruslanbahna/reusable-actions/install-packages@v1.0.6 
         with:
           packages: sysbench
       - run: sysbench cpu --threads=1 run
